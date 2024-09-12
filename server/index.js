@@ -18,7 +18,7 @@ app.use(express.urlencoded())
 const validTopics = ["memory-management", "process-scheduling", "file-systems"];
 
 // Handle GET request for a specific category
-app.get('/:category', (req, res) => {
+app.get('/category/:category', (req, res) => {
     const category = req.params.category;
   
     // Validate the category
