@@ -3,7 +3,8 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const connectDB = require('./src/db/index');
-const fetchQstns = require("./src/db/getQuestions")
+const fetchQstns = require("./src/db/getQuestions");
+const Question = require("./src/models/qstns.model");
 
 const port = process.env.PORT || 4000; //server will run on this port
 
@@ -22,7 +23,7 @@ fetchQstns()
 const validTopics = ["memory-management", "process-scheduling", "file-systems"];
 
 // Handle GET request for a specific category
-app.get('/category/:category', async(req, res) => {
+app.get('/category/:category', async (req, res) => {
   const category = req.params.category;
 
   // Validate the category
@@ -51,15 +52,33 @@ app.get('/category/:category', async(req, res) => {
 
 });
 
-app.post("/submit-result", (req, res) => {
+// Handle POST request to /submit-result
+app.post('/submit-result', async (req, res) => {
   try {
-    console.log(req.body);
-    res.status(200).json({ message: "Data received successfully" });
+    const results = req.body; // Array of objects { questionId, isCorrect }
+
+    // Use `for...of` loop and `await` to process each result
+    for (const result of results) {
+      const { questionId, isCorrect } = result;
+
+      await Question.findByIdAndUpdate(
+        questionId, // ID of the document to update
+        {
+          $inc: {
+            attempts: 1, // Increment attempts field by 1
+            ...(isCorrect && { correct: 1 }) // Increment correct field by 1 if isCorrect is true
+          }
+        }
+      );
+    }
+
+    res.status(200).json({ message: 'Results updated successfully' });
   } catch (error) {
     console.error('Error handling POST request:', error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: 'An error occurred while processing the request' });
   }
 });
+
 
 
 app.listen(port, () => {
