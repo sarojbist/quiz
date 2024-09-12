@@ -1,7 +1,8 @@
 require('dotenv').config()
 const express = require("express");
 const app = express();
-const questions = require("./src/utils/questions")
+const cors = require("cors");
+const questions = require("./src/utils/questions");
 
 const port = process.env.PORT || 4000; //server will run on this port
 
@@ -37,5 +38,5 @@ app.get('/:category', (req, res) => {
   });
 
 app.listen(port, () => {
-    console.log("App is running on ", "http:localhost"+port);
+    console.log("App is running on ", "localhost:"+port);
 })
