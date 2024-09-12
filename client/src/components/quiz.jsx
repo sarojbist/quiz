@@ -49,11 +49,28 @@ const Quiz = () => {
     });
     return score;
   }
+  // I want to send userid and isCorrect only in this function
+  function sendtoBackend() {
 
+    const resultData = questions.map((question, index) => {
+      return {
+        questionId: question._id,
+        isCorrect: selectedAnswers[index] === question.correct_answer, // Check if selected answer is correct
+      };
+    });
+    axios.post('http://localhost:8000/submit-result', resultData)
+      .then(response => {
+        console.log('Success:', response.data); // Handle the response from the backend
+      })
+      .catch(error => {
+        console.error('Error:', error); // Handle any errors
+      });
+  }
   function handleSubmit() {
     const finalScore = calculateScore();
     setScore(finalScore); // Set the score
     setIsSubmitted(true); // Mark quiz as submitted
+    sendtoBackend();
   }
 
   if (loading) {

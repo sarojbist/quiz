@@ -51,6 +51,17 @@ app.get('/category/:category', async(req, res) => {
 
 });
 
+app.post("/submit-result", (req, res) => {
+  try {
+    console.log(req.body);
+    res.status(200).json({ message: "Data received successfully" });
+  } catch (error) {
+    console.error('Error handling POST request:', error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+
 app.listen(port, () => {
   console.log("App is running on ", "localhost:" + port);
 })
