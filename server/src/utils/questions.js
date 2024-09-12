@@ -4,7 +4,9 @@ const questions = [
     description: "Which of the following is a valid page replacement algorithm?",
     options: ["FIFO", "LRU", "SJF", "Round Robin"],
     correct_answer: "LRU",
-    topic: "memory-management"
+    topic: "memory-management",
+    attempts: 0,
+    correct: 0
   },
   {
     description: "What is the purpose of paging in an operating system?",
