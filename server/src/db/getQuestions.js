@@ -7,13 +7,10 @@ const fetchQuestions = async () => {
 
     // Fetch all questions from the 'qstns' collection
     const questions = await Question.find({});
-
     // Return or process the questions
     return questions;
   } catch (error) {
     console.error('Error fetching questions:', error.message);
-  } finally {
-    
   }
 };
 
