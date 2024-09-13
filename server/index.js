@@ -34,14 +34,22 @@ app.get('/category/:category', async (req, res) => {
     const questions = await fetchQstns();
 
     // Filter questions by the valid category
-    const filteredQuestions = questions.filter((q) => {
-      return q.topic === category;
-    })
-    // Limit the number of questions to 5
-    const limitedQuestions = filteredQuestions.slice(0, 5);
+    const filteredQuestions = questions
+      .filter((q) => q.topic === category) // Filter by category
+      .sort((a, b) => {
+        // Prioritize questions with attempts === 0 or correct === 0
+        if (a.attempts === 0 || a.correct === 0) return -1;
+        if (b.attempts === 0 || b.correct === 0) return 1;
 
-    // Return the limited questions
-    res.json(limitedQuestions);
+        // Sort by correct/attempts ratio (higher ratio comes later)
+        const ratioA = a.correct / a.attempts;
+        const ratioB = b.correct / b.attempts;
+        return ratioA - ratioB; // Sort in ascending order
+      })
+      .slice(0, 5); // Limit the number of questions to 5
+
+    // Return the limited filtered questions
+    res.json(filteredQuestions);
   }
 
   catch (error) {
@@ -57,7 +65,7 @@ app.post('/submit-result', async (req, res) => {
   try {
     const results = req.body; // Array of objects { questionId, isCorrect }
 
-    // Use `for...of` loop and `await` to process each result
+    // Use for...of loop and `await` to process each result
     for (const result of results) {
       const { questionId, isCorrect } = result;
 
