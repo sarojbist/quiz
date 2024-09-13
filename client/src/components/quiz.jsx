@@ -52,7 +52,6 @@ const Quiz = () => {
   }
   // I want to send userid and isCorrect only in this function
   function sendtoBackend() {
-
     const resultData = questions.map((question, index) => {
       return {
         questionId: question._id,
