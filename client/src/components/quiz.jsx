@@ -88,8 +88,8 @@ const Quiz = () => {
         <>
           {questions.map((question, index) => (
             <div key={index} className="mb-4 p-4 border border-gray-300 rounded-lg">
-              <p className="mb-2 text-lg font-semibold">{question.description} - {index}</p>
-              <ul className="pl-5">
+              <p className="mb-2 text-base md:text-lg font-semibold">{question.description}</p>
+              <ul className="pl-2 md:pl-5">
                 {question.options.map((option, i) => (
                   <div
                     className={`flex items-center space-x-2 p-3 rounded-lg border border-gray-300 mb-2 cursor-pointer 
