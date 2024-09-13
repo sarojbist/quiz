@@ -15,7 +15,8 @@ const Quiz = () => {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/category/${category}`);
+        //old url: http://localhost:8000/category/${category}
+        const response = await axios.get(`https://quiz-backend-5a0c.onrender.com/category/${category}`);
         setQuestions(response.data);
       } catch (error) {
         console.error("Error fetching questions", error);
@@ -58,7 +59,8 @@ const Quiz = () => {
         isCorrect: selectedAnswers[index] === question.correct_answer, // Check if selected answer is correct
       };
     });
-    axios.post('http://localhost:8000/submit-result', resultData)
+    // old url: http://localhost:8000/submit-result
+    axios.post('https://quiz-backend-5a0c.onrender.com/submit-result', resultData)
       .then(response => {
         console.log('Success:', response.data); // Handle the response from the backend
       })
